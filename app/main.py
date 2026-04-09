@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, Path, HTTPException
 from typing import Annotated
 
 from pydantic import BaseModel, Field
+from sqlalchemy import text
 from starlette import status
 
 from app.db.database import engine, SessionLocal
@@ -67,11 +68,11 @@ async def delete_user(db:db_dependency, user_id: int = Path(gt=0)):
     db.delete(db_user)
     db.commit()
 
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
 @app.get("/healthcheck")
-async def healthcheck():
-    return {"status": "healthy"}
+async def healthcheck(db: db_dependency):
+    try:
+        # Simply ask the DB for the number 1 to verify connection
+        db.execute(text("SELECT 1"))
+        return {"status": "healthy", "database": "connected"}
+    except Exception as e:
+        raise HTTPException(status_code=503, detail="Database connection failed")
