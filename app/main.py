@@ -8,10 +8,13 @@ from starlette import status
 from app.db.database import engine, SessionLocal
 from app.models.users import Base, User
 from sqlalchemy.orm import Session
+from app.api.v1.endpoints.auth import router as auth_router
+
 
 # Create the files before the app starts.
 Base.metadata.create_all(engine)
 app = FastAPI()
+app.include_router(auth_router, prefix="/auth", tags=["Authentication"])
 
 class UserRegister(BaseModel):
     first_name: str = Field(min_length=1, max_length=15)
