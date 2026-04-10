@@ -11,7 +11,7 @@ async def read_all(db:db_dependency):
     return db.query(User).all()
 
 @router.get("/get_by_id/{user_id}", status_code=status.HTTP_200_OK)
-async def get_by_id(user_id: int = Path(gt=0), db:db_dependency):
+async def get_by_id(db:db_dependency, user_id: int = Path(gt=0)):
     user = db.query(User).filter(User.id == user_id).first()
     if user is not None:
         return user
