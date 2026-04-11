@@ -1,5 +1,7 @@
+from sqlalchemy.orm import relationship
+
 from app.db.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
+from sqlalchemy import Column, Integer, String
 
 
 class User(Base):
@@ -9,4 +11,6 @@ class User(Base):
     last_name = Column(String)
     email = Column(String, nullable=False, unique=True, index=True)
     password = Column(String)
-    bodyfat = Column(Float)
+
+    nutrition_logs = relationship("NutritionLog", back_populates="owner")
+    user_profile = relationship("UserProfile", back_populates="user", uselist=False)
