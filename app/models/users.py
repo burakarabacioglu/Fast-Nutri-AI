@@ -11,7 +11,7 @@ class User(Base):
     first_name = Column(String)
     last_name = Column(String)
     email = Column(String, nullable=False, unique=True, index=True)
-    password = Column(String)
+    hashed_password = Column(String, nullable=False)
 
     nutrition_logs = relationship("NutritionLog", back_populates="owner")
     user_profile = relationship("UserProfile", back_populates="user", uselist=False)
