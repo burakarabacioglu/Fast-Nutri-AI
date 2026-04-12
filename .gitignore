@@ -217,3 +217,7 @@ logs/
 data/
 models/weights/
 .cache/
+
+#Alembic
+alembic/__pycache__/
+alembic/versions/__pycache__/
